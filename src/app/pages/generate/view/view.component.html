@@ -1,0 +1,149 @@
+<div class="content-wrap">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="card-title mb-0">Generate Teams</h5>
+        <a routerLink="/event/add" class="ntitle">Generate Team</a>
+      </div>
+    </div>
+
+    <div class="spinner-wrapper" *ngIf="teamParticipantData.length === 0 && teamParticipantLoader">
+      <div class="spinner"></div>
+    </div>
+
+    <div class="error-wrapper text-info mb-3" *ngIf="teamParticipantData.length === 0 && !teamParticipantLoader">
+      Event not generated.
+    </div>
+
+    <div class="alert alert-primary border-0 rounded-0 p-2 mx-3 w-auto" role="alert" *ngIf="successMessage">
+      {{successMessage}}
+    </div>
+
+    <div class="alert alert-danger border-0 rounded-0 p-2 mx-3 w-auto" role="alert" *ngIf="errorMessage">
+      {{errorMessage}}
+    </div>
+
+    <ng-container *ngIf="teamParticipantData.length > 0 && !teamParticipantLoader">
+      <div class="col-12" *ngFor="let item of teamParticipantData;let i = index;">
+        <div class="card mb-3 rounded-0 border-0">
+          <div class="card-body p-0">
+            <div class="team-title">
+              <div class="mb-1 d-flex">
+                <span>{{ item.name }}</span>
+
+                <a routerLink="/event/{{item.key}}"
+                  class="d-flex justify-content-center align-items-center ms-3 pointer">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-pencil-square text-success" viewBox="0 0 16 16">
+                    <path
+                      d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                    <path fill-rule="evenodd"
+                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                  </svg>
+                </a>
+
+                <span class="d-flex justify-content-center align-items-center ms-3 pointer" (click)="deleteEvent(item)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-trash3-fill text-danger" viewBox="0 0 16 16">
+                    <path
+                      d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                  </svg>
+                </span>
+              </div>
+              <div class="subtitle">10 participant in {{ item?.participants?.length }} teams</div>
+            </div>
+
+            <div class="share-link p-3 bg-white">
+              <div class="d-flex justify-content-start align-items-center fs-bold text-muted mb-2">
+                <strong style="color: rgb(135 135 135);" class="me-2">Share Link</strong> (public draw)
+                <span class="d-flex justify-content-center align-items-center ms-2">
+                  <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                    viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#808080"
+                      stroke="none">
+                      <path d="M1036 5109 c-446 -58 -825 -367 -969 -789 -66 -192 -62 -88 -62
+                    -1760 0 -1430 1 -1520 18 -1600 80 -371 307 -669 632 -830 114 -56 185 -81
+                    305 -107 80 -17 170 -18 1600 -18 1430 0 1520 1 1600 18 371 80 669 307 830
+                    632 56 114 81 185 107 305 16 77 18 141 18 670 0 582 0 585 -22 626 -12 22
+                    -40 57 -62 77 -105 95 -279 67 -356 -57 l-30 -49 -6 -581 c-6 -644 -5 -628
+                    -75 -772 -88 -179 -254 -314 -454 -371 -62 -17 -141 -18 -1550 -18 -1412 0
+                    -1488 1 -1550 18 -250 71 -436 257 -507 507 -17 62 -18 141 -18 1550 0 1405 1
+                    1489 18 1550 56 201 191 366 371 453 146 72 128 70 772 76 l581 6 49 30 c124
+                    77 152 251 57 356 -20 22 -55 50 -77 62 -41 22 -46 22 -596 23 -305 1 -586 -2
+                    -624 -7z" />
+                      <path d="M3301 5106 c-48 -17 -108 -71 -133 -119 -47 -89 -23 -218 53 -281 75
+                    -64 48 -61 584 -66 l490 -5 -977 -980 c-895 -899 -977 -984 -988 -1025 -50
+                    -189 111 -350 300 -300 41 11 124 91 1028 993 l982 982 0 -485 0 -485 24 -51
+                    c47 -100 159 -158 263 -134 66 14 130 62 163 120 l25 45 0 815 c0 776 -1 817
+                    -19 850 -26 49 -64 88 -111 113 -40 22 -41 22 -845 24 -616 1 -813 -1 -839
+                    -11z" />
+                    </g>
+                  </svg>
+                </span>
+              </div>
+
+              <div class="d-flex justify-content-start align-items-center">
+                <div class="input-group mb-0" style="width: 60%;">
+                  <input type="text" class="form-control rounded-0 bg-white shadow-none " placeholder="Share Link"
+                    [value]="env.baseUrl + '/' + item.key" aria-describedby="public-link">
+                  <span
+                    class="rounded-0 shadow-none bg-white d-flex justify-content-center align-items-center input-group-text"
+                    id="public-link" (click)="copyLink(item.key)" style="cursor: pointer;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink">
+                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="ic_fluent_copy_link_24_filled" fill="#212121" fill-rule="nonzero">
+                          <path
+                            d="M13.7533481,6.49330383 L10.2466519,6.49330383 C9.46988587,6.49330383 8.78519098,6.09910034 8.38170952,5.49983563 L6.25,5.5 C5.87030423,5.5 5.55650904,5.78215388 5.50684662,6.14822944 L5.5,6.25 L5.5,19.754591 C5.5,20.1342868 5.78215388,20.448082 6.14822944,20.4977444 L6.35177056,20.5114376 C6.71784612,20.5611 7,20.8748952 7,21.254591 C7,21.6688046 6.66421356,22.004591 6.25,22.004591 C5.05913601,22.004591 4.08435508,21.0794294 4.00519081,19.9086398 L4,19.754591 L4,6.25 C4,5.05913601 4.92516159,4.08435508 6.09595119,4.00519081 L6.25,4 L8.01344395,3.9994587 C8.13651196,2.8749731 9.08940148,2 10.2466519,2 L13.7533481,2 C14.9105985,2 15.863488,2.8749731 15.9865561,3.9994587 L17.75,4 C18.940864,4 19.9156449,4.92516159 19.9948092,6.09595119 L20,6.25 L20,11.75425 C20,12.1684635 19.6642136,12.50425 19.25,12.50425 C18.8703042,12.50425 18.556509,12.2220961 18.5068466,11.8560205 L18.5,11.75425 L18.5,6.25 C18.5,5.87030423 18.2178461,5.55650904 17.8517706,5.50684662 L17.75,5.5 L15.6182905,5.49983563 C15.214809,6.09910034 14.5301141,6.49330383 13.7533481,6.49330383 Z M16.9999998,13.9975257 L17.9999998,13.9975257 C20.209139,13.9975257 21.9999998,15.7883867 21.9999998,17.9975257 C21.9999998,20.1397211 20.3160315,21.8886046 18.2038265,21.9926208 L18.004591,21.9975151 L17.004591,22.0021276 C16.452312,22.0046417 16.0025461,21.5589866 15.9999891,21.0067076 C15.9976554,20.4938772 16.3817517,20.069438 16.87882,20.0093903 L16.995409,20.0021272 L17.9999998,19.9975257 C19.1045695,19.9975257 19.9999998,19.1020952 19.9999998,17.9975257 C19.9999998,16.9431639 19.1841222,16.0793606 18.1492621,16.0030114 L17.9999998,15.9975257 L16.9999998,15.9975257 C16.4477153,15.9975257 15.9999891,15.5498104 15.9999891,14.9975257 C15.9999891,14.4846898 16.3860402,14.0620185 16.8833787,14.0042534 L16.9999998,13.9975257 L17.9999998,13.9975257 L16.9999998,13.9975257 Z M12.5,14.0021167 L13.5,14.0021167 C14.0522847,14.0021167 14.5,14.4498319 14.5,15.0021167 C14.5,15.5149525 14.1139598,15.9376238 13.6166211,15.9953889 L13.5,16.0021167 L12.5,16.0021167 C11.3954305,16.0021167 10.5,16.8975472 10.5,18.0021167 C10.5,19.0564785 11.3158778,19.9202818 12.3507377,19.9966309 L12.5,20.0021167 L13.5,20.0021167 C14.0522847,20.0021167 14.5,20.4498319 14.5,21.0021167 C14.5,21.5149525 14.1139598,21.9376238 13.6166211,21.9953889 L13.5,22.0021167 L12.5,22.0021167 C10.290861,22.0021167 8.5,20.2112557 8.5,18.0021167 C8.5,15.8599213 10.1839685,14.1110378 12.3003597,14.007012 L12.5,14.0021167 L13.5,14.0021167 L12.5,14.0021167 Z M12.4985614,16.9998212 L18,16.9998212 C18.5522847,16.9998212 19,17.4475364 19,17.9998212 C19,18.512657 18.6139598,18.9353283 18.1166211,18.9930934 L18,18.9998212 L12.4985614,18.9998212 C11.9462767,18.9998212 11.4985614,18.5521059 11.4985614,17.9998212 C11.4985614,17.4869853 11.8846016,17.064314 12.3819403,17.0065489 L12.4985614,16.9998212 L18,16.9998212 L12.4985614,16.9998212 Z M13.7533481,3.5 L10.2466519,3.5 C9.83428745,3.5 9.5,3.83428745 9.5,4.24665191 C9.5,4.65901638 9.83428745,4.99330383 10.2466519,4.99330383 L13.7533481,4.99330383 C14.1657126,4.99330383 14.5,4.65901638 14.5,4.24665191 C14.5,3.83428745 14.1657126,3.5 13.7533481,3.5 Z">
+                          </path>
+                        </g>
+                      </g>
+                    </svg>
+                  </span>
+                </div>
+                <small class="text-success ms-2" *ngIf="copied">Copied</small>
+              </div>
+            </div>
+
+            <div class="row p-3" *ngIf="item.participants && item.participants.length > 0">
+              <div class="col-6" *ngFor="let party of item.participants; let pIndex = index;">
+                <div class="team-detail mb-3">
+                  {{ party?.team?.name }} <span class="text-muted ms-1">({{ party?.players.length }})</span>
+                </div>
+
+                <div class="players-lists" *ngIf="party.players && party.players.length > 0">
+                  <div class="players-list-items" *ngFor="let player of party.players; let j = index;">
+                    <div class="player-detail me-3" style="flex: 1;">
+                      <div class="delete" style="min-width: 36px;font-size: 16px;">
+                        {{ j + 1 }}
+                      </div>
+
+                      <div class="name-input w-100">
+                        <div
+                          class="rounded-0 d-flex justify-content-between align-items-center shadow-none player-name pointer border-0">
+                          <span class="text-capitalize">{{ player.name }}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="btn-group rounded-0 players-score">
+                      <div class="score-count active">{{ player.skill ? player.skill : 0 }}</div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex justify-content-end align-items-center">
+                    <div class="d-flex" style="line-height: 14px;">
+                      <span class="pcount fw-semibold text-muted bg-transparent align-items-start">
+                        {{ getPlayerSkillCount(party.players) }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

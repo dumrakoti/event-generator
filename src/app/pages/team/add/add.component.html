@@ -1,0 +1,53 @@
+<div class="content-wrap">
+  <div class="row">
+    <div class="col-6">
+      <div class="card rounded-0 border-0">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Add Team</h5>
+
+          <div class="alert alert-primary py-2" role="alert" *ngIf="successMsg">
+            {{successMsg}}
+          </div>
+
+          <div class="alert alert-danger py-2" role="alert" *ngIf="errorMsg">
+            {{errorMsg}}
+          </div>
+
+          <form class="players-lists" [formGroup]="form" (ngSubmit)="submit(form.value)">
+            <ng-container formArrayName="teams">
+              <div class="mb-3" *ngFor="let steps of postingTeam().controls; let pIndex = index;"
+                [formGroupName]="pIndex">
+                <div class="players-list-items mb-0">
+                  <div class="player-detail w-100">
+                    <div class="delete" (click)="removeTeam(pIndex)">x</div>
+
+                    <div class="name-input w-100">
+                      <input type="text" name="pname" id="pname" placeholder="Team name"
+                        class="form-control rounded-0 shadow-none border-0" formControlName="name" />
+                    </div>
+                  </div>
+                </div>
+
+                <small *ngIf="steps.get('name')?.invalid && steps.get('name')?.touched" class="text-danger">
+                  Team name is required.
+                </small>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center" style="height: 36px;">
+                <div class="d-flex" style="line-height: 14px; height: 36px; cursor: pointer;" (click)="addTeam()">
+                  <span class="pcount" *ngIf="postingTeam().controls">
+                    {{ postingTeam().controls.length }}
+                  </span>
+                  <span class="ntitle">Add Team</span>
+                </div>
+
+                <button type="submit" class="btn btn-success rounded-0 shadow-none"
+                  [disabled]="submitted">Submit</button>
+              </div>
+            </ng-container>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

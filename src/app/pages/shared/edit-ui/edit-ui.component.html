@@ -1,0 +1,71 @@
+<div class="alert alert-primary py-2" role="alert" *ngIf="statusMessage">
+  {{ statusMessage }}
+</div>
+
+<form class="players-lists">
+  <div class="mb-3">
+    <div class="players-list-items mb-0">
+      <div class="player-detail" style="flex: 1;">
+        <div class="delete">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-pencil-square text-success" viewBox="0 0 16 16">
+            <path
+              d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+            <path fill-rule="evenodd"
+              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+          </svg>
+        </div>
+
+        <div class="name-input w-100">
+          <input type="text" name="pname" id="pname-{{data.key}}" placeholder="Player name"
+            class="form-control rounded-0 shadow-none border-0" required [(ngModel)]="data.name"
+            [ngModelOptions]="{standalone: true}" />
+        </div>
+      </div>
+
+      <div class="btn-group rounded-0 players-score ms-3" *ngIf="slug === 'player'">
+        <input type="radio" class="btn-check border-0 score-count" [(ngModel)]="data.skill" [value]="1"
+          id="skill1-{{data.key}}" autocomplete="off" [ngModelOptions]="{standalone: true}">
+        <label class="btn btn-outline-primary border-0 rounded-0" [ngClass]="{'active': data.skill >= 1}"
+          for="skill1-{{data.key}}">1</label>
+
+        <input type="radio" class="btn-check border-0 score-count" [(ngModel)]="data.skill" [value]="2"
+          id="skill2-{{data.key}}" autocomplete="off" [ngModelOptions]="{standalone: true}">
+        <label class="btn btn-outline-primary border-0 rounded-0" [ngClass]="{'active': data.skill >= 2}"
+          for="skill2-{{data.key}}">2</label>
+
+        <input type="radio" class="btn-check border-0 score-count" [(ngModel)]="data.skill" [value]="3"
+          id="skill3-{{data.key}}" autocomplete="off" [ngModelOptions]="{standalone: true}">
+        <label class="btn btn-outline-primary border-0 rounded-0" [ngClass]="{'active': data.skill >= 3}"
+          for="skill3-{{data.key}}">3</label>
+
+        <input type="radio" class="btn-check border-0 score-count" [(ngModel)]="data.skill" [value]="4"
+          id="skill4-{{data.key}}" autocomplete="off" [ngModelOptions]="{standalone: true}">
+        <label class="btn btn-outline-primary border-0 rounded-0" [ngClass]="{'active': data.skill >= 4}"
+          for="skill4-{{data.key}}">4</label>
+
+        <input type="radio" class="btn-check border-0 score-count" [(ngModel)]="data.skill" [value]="5"
+          id="skill5-{{data.key}}" autocomplete="off" [ngModelOptions]="{standalone: true}">
+        <label class="btn btn-outline-primary border-0 rounded-0" [ngClass]="{'active': data.skill >= 5}"
+          for="skill5-{{data.key}}">5</label>
+      </div>
+    </div>
+
+    <small *ngIf="!data.name || data.name.trim() === ''" class="text-capitalize text-danger">
+      {{slug}} name is required.
+    </small>
+
+    <div *ngIf="(!data.skill || data.skill < 1 || data.skill > 5) && slug === 'player'" class="text-danger">
+      Skill level must be between 1 and 5.
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center" style="height: 36px;">
+    <a routerLink="/{{slug}}/add" class="d-flex" style="text-decoration: none; line-height: 14px; height: 36px;">
+      <span class="ntitle">Add {{slug === 'player' ? 'Participant' : 'Team'}}</span>
+    </a>
+
+    <button type="button" class="btn btn-success rounded-0 shadow-none" [disabled]="submitted"
+      (click)="submit()">Submit</button>
+  </div>
+</form>
