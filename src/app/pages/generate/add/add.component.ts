@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators, FormArray } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, map } from 'rxjs';
 import { Player } from 'src/app/models/player.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
@@ -16,6 +16,7 @@ export class AddComponent implements OnInit, OnDestroy {
   private title = inject(Title);
   private router = inject(Router);
   private ps = inject(FirebaseService);
+  private route = inject(ActivatedRoute);
 
   form: UntypedFormGroup | any;
   submitted: boolean = false;
@@ -30,24 +31,63 @@ export class AddComponent implements OnInit, OnDestroy {
   teamsData: Player[] | any = [];
   teamsLoader: boolean = false;
 
+  eventByKeySubscription: Subscription | any = null;
+  eventData: any;
+  eventKey: any = '';
+
   constructor() {
     this.title.setTitle('Create Team & Participant | Team Generator');
+    this.route.queryParams.subscribe((params) => {
+      this.eventKey = params['key'];
+    });
   }
 
   ngOnInit() {
     this.fetchPlayers();
     this.fetchTeams();
+
     this.form = this.formBuilder.group({
       name: ['', [Validators.required]],
       participants: this.formBuilder.array([], Validators.required)
     });
-
     this.addTeam();
+    if (this.eventKey) {
+      this.fetchEventByKey();
+    }
   }
 
   ngOnDestroy(): void {
     this.playersSubscription?.unsubscribe();
     this.teamsSubscription?.unsubscribe();
+    this.eventByKeySubscription?.unsubscribe();
+  }
+
+  fetchEventByKey() {
+    this.eventByKeySubscription = this.ps.getByKey('team-generate', this.eventKey)
+      .snapshotChanges()
+      .subscribe({
+        next: (snapshot: any) => {
+          if (snapshot.payload.exists()) {
+            this.eventData = { key: snapshot.key, ...snapshot.payload.val() };
+            console.log(this.eventData);
+            this.initializeForm(this.eventData);
+          } else {
+            console.log('Team not found.');
+          }
+        },
+        error: (err) => {
+          console.log('Failed to load team data. Please try again later.');
+        },
+      });
+  }
+
+  initializeForm(data: any) {
+    this.form.patchValue({
+      name: data.name,
+    });
+
+    // form array
+
   }
 
   fetchPlayers(): void {

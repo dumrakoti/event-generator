@@ -31,7 +31,7 @@
               <div class="mb-1 d-flex">
                 <span>{{ item.name }}</span>
 
-                <a routerLink="/event/{{item.key}}"
+                <a [routerLink]="['/event/add']" [queryParams]="{ key: item.key }"
                   class="d-flex justify-content-center align-items-center ms-3 pointer">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-pencil-square text-success" viewBox="0 0 16 16">

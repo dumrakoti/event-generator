@@ -13,7 +13,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     RouterModule.forChild([{ path: '', component: AddComponent }]),
     FormsModule,
     ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule,
+    RouterModule
   ]
 })
 export class AddModule { }
