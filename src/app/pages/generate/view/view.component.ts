@@ -51,7 +51,6 @@ export class ViewComponent {
       next: (data: Player[]) => {
         this.teamParticipantData = data;
         this.teamParticipantLoader = false;
-        console.log('teamParticipantData', this.teamParticipantData);
       },
       error: (err: any) => {
         this.errorMessage = 'Failed to load team and participant. Please try again later.';

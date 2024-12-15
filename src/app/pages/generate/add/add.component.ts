@@ -124,7 +124,6 @@ export class AddComponent implements OnInit, OnDestroy {
   }
 
   submit(fd: any) {
-    console.log('fd', fd);
     if (this.form.invalid || this.submitted) {
       return;
     }

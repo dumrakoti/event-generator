@@ -23,7 +23,6 @@ export class EditUiComponent {
     this.statusMessage = '';
     this.submitted = true;
     let { key, ...newObj } = this.data;
-    console.log('newObj', newObj);
     this.ps.updateByKey(this.slug, this.data.key, newObj).then(() => {
       this.statusMessage = `New ${this.slug === 'player' ? 'participant' : 'team'} added successfully!`;
       this.submitted = false;
